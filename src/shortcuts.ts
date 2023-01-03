@@ -1,4 +1,4 @@
-/// <reference types="./editor/monaco" />
+import * as monaco from "monaco-editor";
 import { DebugEvents, IButtonEvents } from "./events";
 
 export interface IDebugShortcuts {
@@ -59,11 +59,9 @@ export class Shortcuts {
                 if (!event.metaKey) {
                     event.preventDefault();
                 }
-                if (action === "breakpoint"){
+                if (action === "breakpoint") {
                     this.events.process("button", action as keyof IButtonEvents, undefined, this.editor.getPosition()?.lineNumber);
-                }
-                else
-                    this.events.process("button", action as keyof IButtonEvents);
+                } else this.events.process("button", action as keyof IButtonEvents);
             }
         });
     }

@@ -1,4 +1,4 @@
-/// <reference types="./editor/monaco" />
+import * as monaco from "monaco-editor";
 import { DebugProtocol } from "vscode-debugprotocol";
 import { DebugEvents } from "./events";
 

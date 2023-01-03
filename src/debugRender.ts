@@ -1,4 +1,4 @@
-/// <reference types="./editor/monaco" />
+import * as monaco from "monaco-editor";
 import { DebugProtocol } from "vscode-debugprotocol";
 import { DebugEvents, IButtonEvents } from "./events";
 
@@ -30,12 +30,12 @@ export interface IStyle {
 }
 
 export interface IDebuggerThemeRules {
-    "container"?: IStyle;
+    container?: IStyle;
     "container.resize": IStyle;
     "drawer.head": IStyle;
     "drawer.body": IStyle;
     "drawer.footer": IStyle;
-    "toolbox"?: IStyle;
+    toolbox?: IStyle;
     "toolbox.button": IStyle;
     "drawer.callstack"?: IStyle;
     "drawer.variables": IStyle;
@@ -56,15 +56,15 @@ export interface IDebuggerTheme {
 export class ThemeVSDark implements IDebuggerTheme {
     public name = "vs-dark";
     public rules: IDebuggerThemeRules = {
-        "container": {
-            background: "#1e1e1e"
+        container: {
+            background: "#1e1e1e",
         },
         "container.resize": {
             float: "left",
             width: "4px",
             height: "100%",
             cursor: "w-resize",
-            background: "#3e3e3e"
+            background: "#3e3e3e",
         },
         "drawer.head": {
             background: "#3e3e3e",
@@ -73,7 +73,7 @@ export class ThemeVSDark implements IDebuggerTheme {
             padding: "5px 20px",
             margin: "0px",
             "font-size": "14px",
-            "box-sizing": "border-box"
+            "box-sizing": "border-box",
         },
         "drawer.body": {
             background: "#1e1e1e",
@@ -86,9 +86,9 @@ export class ThemeVSDark implements IDebuggerTheme {
             "white-space": "nowrap",
         },
         "drawer.footer": {
-            cursor: "ns-resize", 
-            height: "4px", 
-            background: "#1f1f1f"
+            cursor: "ns-resize",
+            height: "4px",
+            background: "#1f1f1f",
         },
         "drawer.variables": {
             "list-style-type": "none",
@@ -99,7 +99,7 @@ export class ThemeVSDark implements IDebuggerTheme {
             margin: "0 0 0 0",
             "font-family": "Consolas, 'Courier New', monospace",
         },
-        "toolbox": {
+        toolbox: {
             background: "#1e1e1e",
             color: "white",
         },
@@ -110,28 +110,28 @@ export class ThemeVSDark implements IDebuggerTheme {
             height: "30px",
             margin: "5px",
         },
-        "drawer.variables.name": {color: "violet"},
-        "drawer.variables.string": {color: "orange"},
-        "drawer.variables.object": {color: "white"},
-        "drawer.variables.int": {color: "lightgreen"},
-        "drawer.variables.boolean": {color: "yellow"},
-        "drawer.variables.default": {color: "lightblue"},
-        "drawer.variables.arrow": {fill: "white"}
+        "drawer.variables.name": { color: "violet" },
+        "drawer.variables.string": { color: "orange" },
+        "drawer.variables.object": { color: "white" },
+        "drawer.variables.int": { color: "lightgreen" },
+        "drawer.variables.boolean": { color: "yellow" },
+        "drawer.variables.default": { color: "lightblue" },
+        "drawer.variables.arrow": { fill: "white" },
     };
 }
 
 export class ThemeVSLight implements IDebuggerTheme {
     public name = "vs-light";
     public rules: IDebuggerThemeRules = {
-        "container": {
-            background: "#fffffe"
+        container: {
+            background: "#fffffe",
         },
         "container.resize": {
             float: "left",
             width: "4px",
             height: "100%",
             cursor: "w-resize",
-            background: "#eeeeee"
+            background: "#eeeeee",
         },
         "drawer.head": {
             background: "#eeeeee",
@@ -140,7 +140,7 @@ export class ThemeVSLight implements IDebuggerTheme {
             padding: "5px 20px",
             margin: "0px",
             "font-size": "14px",
-            "box-sizing": "border-box"
+            "box-sizing": "border-box",
         },
         "drawer.body": {
             background: "#fffffe",
@@ -153,9 +153,9 @@ export class ThemeVSLight implements IDebuggerTheme {
             "white-space": "nowrap",
         },
         "drawer.footer": {
-            cursor: "ns-resize", 
-            height: "4px", 
-            background: "#fffffe"
+            cursor: "ns-resize",
+            height: "4px",
+            background: "#fffffe",
         },
         "drawer.variables": {
             "list-style-type": "none",
@@ -166,7 +166,7 @@ export class ThemeVSLight implements IDebuggerTheme {
             margin: "0 0 0 0",
             "font-family": "Consolas, 'Courier New', monospace",
         },
-        "toolbox": {
+        toolbox: {
             background: "#1e1e1e",
             color: "white",
         },
@@ -177,13 +177,13 @@ export class ThemeVSLight implements IDebuggerTheme {
             height: "30px",
             margin: "5px",
         },
-        "drawer.variables.name": {color: "darkviolet"},
-        "drawer.variables.string": {color: "darkorange"},
-        "drawer.variables.object": {color: "black"},
-        "drawer.variables.int": {color: "green"},
-        "drawer.variables.boolean": {color: "yellow"},
-        "drawer.variables.default": {color: "blue"},
-        "drawer.variables.arrow": {fill: "grey"}
+        "drawer.variables.name": { color: "darkviolet" },
+        "drawer.variables.string": { color: "darkorange" },
+        "drawer.variables.object": { color: "black" },
+        "drawer.variables.int": { color: "green" },
+        "drawer.variables.boolean": { color: "yellow" },
+        "drawer.variables.default": { color: "blue" },
+        "drawer.variables.arrow": { fill: "grey" },
     };
 }
 
@@ -207,11 +207,11 @@ class Styles {
         background: "none",
     };
     static wrapper: IStyle = { margin: "8px auto", width: "fit-content" };
-    static contentWrapper: IStyle = {float: "left", width: "calc( 100% - 4px)" };
-    static stackFramesHeader: IStyle = {padding: "0px 20px"};
-    static drawerWrapper: IStyle = {width: "100%", margin: "0px"};
+    static contentWrapper: IStyle = { float: "left", width: "calc( 100% - 4px)" };
+    static stackFramesHeader: IStyle = { padding: "0px 20px" };
+    static drawerWrapper: IStyle = { width: "100%", margin: "0px" };
     static wrapperText: IStyle = { margin: "0px" };
-    static drawerFold: IStyle = {display: "none"};
+    static drawerFold: IStyle = { display: "none" };
     static emptyVar: IStyle = { margin: "0 0 0 20px" };
 }
 
@@ -233,18 +233,18 @@ const globalstyle = `
 
 /* Track */
 .drawer-content::-webkit-scrollbar-track {
-  background: #1e1e1e; 
+  background: #1e1e1e;
   border-radius: 10px;
 }
- 
+
 /* Handle */
 .drawer-content::-webkit-scrollbar-thumb {
-  background: #3e3e3e; 
+  background: #3e3e3e;
 }
 
 /* Handle on hover */
 .drawer-content::-webkit-scrollbar-thumb:hover {
-  background: #4e4e4e; 
+  background: #4e4e4e;
 }
 
 .drawer-content::-webkit-scrollbar-corner {
@@ -287,11 +287,9 @@ export class Renderer {
         this.domElement = domElement;
         this.editor = editor;
         this.events = events;
-        if (theme)
-            this.theme = theme;
-        if (this.theme.rules.container)
-            this.domElement.classList.add("container");
-            this.domElement.classList.add(NAMESPACE);
+        if (theme) this.theme = theme;
+        if (this.theme.rules.container) this.domElement.classList.add("container");
+        this.domElement.classList.add(NAMESPACE);
         const wrapper = this.renderElement("div", "contentWrapper container");
         const border = this.renderElement("div", "container resize");
         this.toolbox = this.renderToolbox();
@@ -322,10 +320,7 @@ export class Renderer {
                     this.toolbox.replaceChild(start, this.toolbox.firstChild);
                     this.toolbox.childNodes.forEach((child) => {
                         if (child !== this.toolbox.firstChild) {
-                            (child as HTMLElement).setAttribute(
-                                "class",
-                                "toolbox button disabled"
-                            );
+                            (child as HTMLElement).setAttribute("class", "toolbox button disabled");
                             (child as HTMLElement).setAttribute("disabled", "true");
                         }
                     });
@@ -356,29 +351,29 @@ export class Renderer {
         }
     }
 
-    setTheme(theme: IDebuggerTheme){
+    setTheme(theme: IDebuggerTheme) {
         this.theme = theme;
         this.stylesheet = globalstyle;
         this.buildStyleSheet();
-        document.querySelector('style.'+NAMESPACE)?.remove();
+        document.querySelector("style." + NAMESPACE)?.remove();
         const styles = this.renderElement("style", undefined, this.stylesheet);
         styles.classList.add(NAMESPACE);
         document.head.appendChild(styles);
     }
 
-    private buildStyleSheet(){
-        for (const key in this.theme.rules){
-            const querySelector = "." + NAMESPACE + " ." + key
-            this.stylesheet += querySelector + " {\n" + this.buildStyle(this.theme.rules[key as (keyof IDebuggerThemeRules)]) + "}\n"
-        }   
-        for (const key in Styles){
-            const querySelector = "." + NAMESPACE + " ." + key
-            this.stylesheet += querySelector + " {\n" + this.buildStyle(Styles[key as (keyof Styles)]) + "}\n"
-        }     
+    private buildStyleSheet() {
+        for (const key in this.theme.rules) {
+            const querySelector = "." + NAMESPACE + " ." + key;
+            this.stylesheet += querySelector + " {\n" + this.buildStyle(this.theme.rules[key as keyof IDebuggerThemeRules]) + "}\n";
+        }
+        for (const key in Styles) {
+            const querySelector = "." + NAMESPACE + " ." + key;
+            this.stylesheet += querySelector + " {\n" + this.buildStyle(Styles[key as keyof Styles]) + "}\n";
+        }
     }
 
     private buildStyle(template: IStyle | undefined, override = false, ...style: IStyle[]): string {
-        if (template == undefined){
+        if (template == undefined) {
             return "";
         }
         let styles = {};
@@ -592,7 +587,7 @@ export class Renderer {
                 document.onmousemove = (event) => this.resizeVertical.call(this, event, resize);
             }
             document.onmouseup = () => {
-                document.onmousemove = () => { };
+                document.onmousemove = () => {};
             };
         });
     }

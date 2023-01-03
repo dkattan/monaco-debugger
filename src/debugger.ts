@@ -1,4 +1,4 @@
-/// <reference types="./editor/monaco" />
+import * as monaco from "monaco-editor";
 import { Breakpoints } from "./breakpoints";
 import { IDebugConnection, WebsocketConnection } from "./debugConnection";
 import { Protocol } from "./protocol";
@@ -9,8 +9,8 @@ import { DebugEvents } from "./events";
 import { ThreadWatcher, ServerStates } from "./serverState";
 import { Shortcuts, IDebugShortcuts } from "./shortcuts";
 
-export { IDebuggerTheme, ThemeVSLight, ThemeVSDark }
-export { IDebugConnection, WebsocketConnection }
+export { IDebuggerTheme, ThemeVSLight, ThemeVSDark };
+export { IDebugConnection, WebsocketConnection };
 
 export default class Debugger {
     public breakpoints: Breakpoints;
@@ -43,7 +43,7 @@ export default class Debugger {
         this.editor = editor;
         this.debugArguments = options.debugArguments;
         this.currentFile = options.currentFile;
-        this.autostart = (options.autostart !== undefined) ? options.autostart : true;
+        this.autostart = options.autostart !== undefined ? options.autostart : true;
 
         // create all neseccary objects
         this.protocolProvider = new Protocol(options.language);
@@ -142,7 +142,7 @@ export default class Debugger {
             this.renderer.renderVariablesToDrawer("<b>VARIABLES</b>", variables.body.variables);
         });
         this.events.on("response", "disconnect", () => {
-            console.log("disconnected")
+            console.log("disconnected");
             this.serverStates.disconnectRequest = false;
             this.serverStates.connected = false;
             this.renderer.renderStopLine(-1);
@@ -166,7 +166,7 @@ export default class Debugger {
     }
 
     // Attaches a debug connection to the current object
-    public attachDebugAdapterConnetion(connection: IDebugConnection) {
+    public attachDebugAdapterConnection(connection: IDebugConnection) {
         this.connection = connection;
         this.connection?.on("message", this.messageUtil.handleMessageFromString.bind(this.messageUtil));
     }
@@ -202,7 +202,7 @@ export default class Debugger {
         }
     }
 
-    public setTheme(theme: IDebuggerTheme){
+    public setTheme(theme: IDebuggerTheme) {
         this.renderer.setTheme(theme);
     }
 }
