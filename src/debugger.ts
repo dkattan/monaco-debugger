@@ -2,15 +2,12 @@ import * as monaco from "monaco-editor";
 import { Breakpoints } from "./breakpoints";
 import { IDebugConnection, WebsocketConnection } from "./debugConnection";
 import { Protocol } from "./protocol";
-import { DebugProtocol } from "vscode-debugprotocol";
+import { DebugProtocol } from "@vscode/debugprotocol";
 import { Renderer, IDebuggerTheme, ThemeVSLight, ThemeVSDark } from "./debugRender";
 import { MessageUtil } from "./messageUtil";
 import { DebugEvents } from "./events";
 import { ThreadWatcher, ServerStates } from "./serverState";
 import { Shortcuts, IDebugShortcuts } from "./shortcuts";
-
-export { IDebuggerTheme, ThemeVSLight, ThemeVSDark };
-export { IDebugConnection, WebsocketConnection };
 
 export default class Debugger {
     public breakpoints: Breakpoints;

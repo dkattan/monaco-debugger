@@ -1,5 +1,5 @@
-import { MessageUtil } from "./messageUtil"
-import { DebugProtocol } from "vscode-debugprotocol";
+import { MessageUtil } from "./messageUtil";
+import { DebugProtocol } from "@vscode/debugprotocol";
 
 export interface IDebugConnection {
     adress: string;
@@ -19,7 +19,7 @@ export class WebsocketConnection implements IDebugConnection {
 
     constructor(adress: string) {
         this.adress = adress;
-        this.messageListener = () => { };
+        this.messageListener = () => {};
     }
 
     connect(): void {
@@ -42,21 +42,28 @@ export class WebsocketConnection implements IDebugConnection {
                 console.log("waitUntil", this.messageCallback.waitUntil);
                 callback = false;
                 const protocolMessages = MessageUtil.getProtocolMessages(ev.data);
-                protocolMessages.forEach(message => {
+                protocolMessages.forEach((message) => {
                     console.log(message);
-                    if (message.type == "response" && this.messageCallback?.waitUntil?.includes((message as DebugProtocol.Response).command)){
-                        this.messageCallback.waitUntil = this.messageCallback.waitUntil.filter(command => command !== (message as DebugProtocol.Response).command)
+                    if (
+                        message.type == "response" &&
+                        this.messageCallback?.waitUntil?.includes((message as DebugProtocol.Response).command)
+                    ) {
+                        this.messageCallback.waitUntil = this.messageCallback.waitUntil.filter(
+                            (command) => command !== (message as DebugProtocol.Response).command
+                        );
                     }
-                    if (message.type == "event" && this.messageCallback?.waitUntil?.includes((message as DebugProtocol.Event).event)){
-                        console.log(this.messageCallback.waitUntil)
-                        this.messageCallback.waitUntil = this.messageCallback.waitUntil.filter(event => event !== (message as DebugProtocol.Event).event)
+                    if (message.type == "event" && this.messageCallback?.waitUntil?.includes((message as DebugProtocol.Event).event)) {
+                        console.log(this.messageCallback.waitUntil);
+                        this.messageCallback.waitUntil = this.messageCallback.waitUntil.filter(
+                            (event) => event !== (message as DebugProtocol.Event).event
+                        );
                     }
-                    if (this.messageCallback?.waitUntil?.length == 0){
+                    if (this.messageCallback?.waitUntil?.length == 0) {
                         callback = true;
                     }
-                })
+                });
             }
-            if (callback){
+            if (callback) {
                 this.messageCallback.callback(ev.data);
                 this.messageCallback = null;
             }

@@ -1,4 +1,4 @@
-import { DebugProtocol } from "vscode-debugprotocol";
+import { DebugProtocol } from "@vscode/debugprotocol";
 import { IBreakpoint } from "./breakpoints";
 const DOUBLE_CLRF = "\r\n\r\n";
 export class Protocol {
@@ -107,7 +107,7 @@ export class Protocol {
         return this.requestMessage("continue", { threadId });
     }
 
-    public terminate(restart = false){
-        return this.requestMessage("terminate", {restart: restart})
+    public terminate(restart = false) {
+        return this.requestMessage("terminate", { restart: restart });
     }
 }

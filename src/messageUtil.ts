@@ -1,4 +1,4 @@
-import { DebugProtocol } from "vscode-debugprotocol";
+import { DebugProtocol } from "@vscode/debugprotocol";
 import { DebugEvents } from "./events";
 
 const DOUBLE_CLRF = "\r\n\r\n";

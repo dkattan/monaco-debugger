@@ -1,5 +1,5 @@
 import * as monaco from "monaco-editor";
-import { DebugProtocol } from "vscode-debugprotocol";
+import { DebugProtocol } from "@vscode/debugprotocol";
 import { DebugEvents, IButtonEvents } from "./events";
 
 const NAMESPACE = "monaco-debugger";

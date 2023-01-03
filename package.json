@@ -28,7 +28,7 @@
   "author": "Ron Gruse (DelphiXE5)",
   "license": "GPL-3.0",
   "dependencies": {
-    "vscode-debugprotocol": "^1.39.0"
+    "@vscode/debugprotocol": "^1.58.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.23.0",
