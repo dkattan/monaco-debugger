@@ -71,6 +71,7 @@ export class WebsocketConnection implements IDebugConnection {
     }
 
     close(): void {
+        console.log("Closing debug websocket");
         this.websocket?.then((ws) => ws.close());
     }
 

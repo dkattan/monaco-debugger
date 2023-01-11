@@ -29,16 +29,21 @@ export class Protocol {
     // TODO: set the right attributes
     public init(): string {
         const argument = {
-            clientID: "ehdebug",
-            clientName: "EntwicklerHeld Debugger",
-            adapterID: this.language,
+            clientID: "vscode",
+            clientName: "Visual Studio Code",
+            adapterID: "PowerShell",
             pathFormat: "path",
             linesStartAt1: true,
             columnsStartAt1: true,
             supportsVariableType: true,
             supportsVariablePaging: true,
-            supportsRunInTerminalRequest: false,
-            locale: "de",
+            supportsRunInTerminalRequest: true,
+            locale: "en-us",
+            supportsProgressReporting: true,
+            supportsInvalidatedEvent: true,
+            supportsMemoryReferences: true,
+            supportsArgsCanBeInterpretedByShell: true,
+            supportsMemoryEvent: true,
         };
         return this.requestMessage("initialize", argument);
     }
@@ -66,6 +71,7 @@ export class Protocol {
         let message = "";
         sources.forEach((source) => {
             const fileBreakpoints = breakpoints.filter((breakpoint) => breakpoint.file === source);
+            source.name = "Untitled-1";
             const argument = {
                 source,
                 lines: fileBreakpoints.map((bps) => bps.line),
@@ -75,12 +81,16 @@ export class Protocol {
                 sourceModified: false,
             };
             message += this.requestMessage("setBreakpoints", argument);
+            message += this.requestMessage("setFunctionBreakpoints", { breakpoints: [] });
         });
         return message;
     }
 
     public configurationDone(): string {
         return this.requestMessage("configurationDone");
+    }
+    public threads(): string {
+        return this.requestMessage("threads");
     }
 
     public stackTrace(threadId: number) {

@@ -14,7 +14,7 @@ export default class Debugger {
     private editor: monaco.editor.IStandaloneCodeEditor;
     private connection: IDebugConnection | null = null;
     private protocolProvider: Protocol;
-    private currentFile: DebugProtocol.Source;
+    private currentFile: DebugProtocol.Source | null = null;
     private debugArguments: object;
     private renderer: Renderer;
     private messageUtil: MessageUtil;
@@ -28,18 +28,21 @@ export default class Debugger {
         editor: monaco.editor.IStandaloneCodeEditor,
         domElement: HTMLElement,
         options: {
-            currentFile: DebugProtocol.Source;
             debugArguments: object;
             language: string;
             shortcuts?: IDebugShortcuts | boolean;
-            theme?: IDebuggerTheme;
+            theme?: string;
             autostart?: boolean;
         }
     ) {
         // Set arguments to attributes
         this.editor = editor;
         this.debugArguments = options.debugArguments;
-        this.currentFile = options.currentFile;
+        const currentModel = this.editor.getModel();
+        this.currentFile = {
+            path: currentModel?.uri.toString(),
+            name: currentModel?.uri.fragment,
+        };
         this.autostart = options.autostart !== undefined ? options.autostart : true;
 
         // create all neseccary objects
@@ -105,7 +108,10 @@ export default class Debugger {
 
         // Setup actions
         this.events.on("response", "initialize", () => {
+            console.log("Got Init Response (in debugger.ts)");
+            // this.connection?.sendMessage(this.protocolProvider.continue(this.threads.getCurrentThreadId()));
             this.connection?.sendMessage(this.protocolProvider.launch(this.debugArguments));
+            // this.connection?.sendMessage(this.protocolProvider.launch(this.debugArguments));
             this.renderer.updateToolbox("start");
         });
         this.events.on("event", "initialized", () => {
@@ -117,7 +123,10 @@ export default class Debugger {
         });
         // Need to check if breakpoints are avalible, else start program without breakpoints.
         // Resonse is launched.
-        this.events.on("response", "setBreakpoints", () => {
+        this.events.on("response", "configurationDone", () => {
+            this.connection?.sendMessage(this.protocolProvider.threads());
+        });
+        this.events.on("response", "setFunctionBreakpoints", () => {
             this.connection?.sendMessage(this.protocolProvider.configurationDone());
         });
         this.events.on("event", "stopped", () => {
@@ -141,6 +150,8 @@ export default class Debugger {
         this.events.on("response", "disconnect", () => {
             console.log("disconnected");
             this.serverStates.disconnectRequest = false;
+
+            this.connection?.close();
             this.serverStates.connected = false;
             this.renderer.renderStopLine(-1);
             this.renderer.updateToolbox("stop");
@@ -148,8 +159,9 @@ export default class Debugger {
             this.renderer.renderStackFramesToDrawer("<b>CALL STACK</b>", []);
         });
         this.events.on("event", "terminated", () => {
-            if (!this.serverStates.disconnectRequest && this.serverStates.connected)
+            if (!this.serverStates.disconnectRequest && this.serverStates.connected) {
                 this.connection?.sendMessage(this.protocolProvider.disconnect());
+            }
         });
         this.events.on("event", "thread", (event) => {
             const thread = event as DebugProtocol.ThreadEvent;
@@ -169,9 +181,15 @@ export default class Debugger {
     }
 
     // Starts the debugging
-    public run(): boolean {
-        if (this.connection != null && this.serverStates.connected !== true) {
-            this.connection.connect();
+    public async run() {
+        console.log("run() (debugger.ts)");
+        if (this.connection != null) {
+            if (this.serverStates.connected !== true) {
+                this.connection.connect();
+            }
+            function sleep(ms: number) {
+                return new Promise((resolve) => setTimeout(resolve, ms));
+            }
             // Send initialize message.
             this.connection.sendMessage(this.protocolProvider.init());
             this.serverStates.connected = true;

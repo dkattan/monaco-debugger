@@ -283,11 +283,11 @@ export class Renderer {
     theme: IDebuggerTheme = new ThemeVSLight();
     stylesheet = "";
 
-    constructor(domElement: HTMLElement, editor: monaco.editor.IStandaloneCodeEditor, events: DebugEvents, theme?: IDebuggerTheme) {
+    constructor(domElement: HTMLElement, editor: monaco.editor.IStandaloneCodeEditor, events: DebugEvents, theme?: string) {
         this.domElement = domElement;
         this.editor = editor;
         this.events = events;
-        if (theme) this.theme = theme;
+        if (theme === "vs-dark") this.theme = new ThemeVSDark();
         if (this.theme.rules.container) this.domElement.classList.add("container");
         this.domElement.classList.add(NAMESPACE);
         const wrapper = this.renderElement("div", "contentWrapper container");
@@ -299,7 +299,6 @@ export class Renderer {
         this.domElement.appendChild(wrapper);
         this.domElement.appendChild(border);
         this.addResizeToElement(border, this.domElement, "h");
-        console.log(this.theme);
         this.setTheme(this.theme);
     }
 
